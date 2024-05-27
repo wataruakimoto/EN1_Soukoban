@@ -68,6 +68,15 @@ public class GameManagerScript : MonoBehaviour
         Vector3 moveToPosition = IndexToPosition(moveTo);
         field[moveFrom.y, moveFrom.x].GetComponent<Move>().MoveTo(moveToPosition);
 
+        for (int i = 0; i < 4; ++i)
+        {
+            GameObject particle = Instantiate(
+                particlePrefab,
+                IndexToPosition(moveFrom),
+                Quaternion.identity
+                );
+        }
+
         field[moveTo.y, moveTo.x] = field[moveFrom.y, moveFrom.x];
         field[moveFrom.y, moveFrom.x] = null;
         return true;
@@ -126,7 +135,7 @@ public class GameManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Screen.SetResolution(1280,720,false);
+        Screen.SetResolution(1280, 720, false);
 
         // 配列の実態の作成と初期化
         map = new int[,] { // 8*7サイズ
