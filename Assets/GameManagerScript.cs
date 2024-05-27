@@ -252,5 +252,52 @@ public class GameManagerScript : MonoBehaviour
             // ゲームオブジェクトのSetActiveメソッドを使い有効化
             clearText.SetActive(IsCleard());
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            for (int y = 0; y < map.GetLength(0); y++)
+            {
+                for (int x = 0; x < map.GetLength(1); x++)
+                {
+                    Destroy(field[y, x]);
+
+                    if (map[y, x] == 1)
+                    {
+                        field[y, x] = Instantiate(
+                            playerPrefab,
+                            IndexToPosition(new Vector2Int(x, y)),
+                            Quaternion.identity
+                            );
+                    }
+
+                    if (map[y, x] == 2)
+                    {
+                        field[y, x] = Instantiate(
+                            boxPrefab,
+                            IndexToPosition(new Vector2Int(x, y)),
+                            Quaternion.identity
+                            );
+                    }
+
+                    if (map[y, x] == 3)
+                    {
+                        field[y, x] = Instantiate(
+                            goalPrefab,
+                            IndexToPosition(new Vector2Int(x, y)),
+                            Quaternion.identity
+                            );
+                    }
+
+                    if (map[y, x] == 4)
+                    {
+                        field[y, x] = Instantiate(
+                            wallPrefab,
+                            IndexToPosition(new Vector2Int(x, y)),
+                            Quaternion.identity
+                            );
+                    }
+                }
+            }
+        }
     }
 }
