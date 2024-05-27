@@ -224,9 +224,6 @@ public class GameManagerScript : MonoBehaviour
 
             //移動処理を関数化
             MoveNumber("Player", playerIndex, playerIndex + new Vector2Int(-1, 0));
-
-            // ゲームオブジェクトのSetActiveメソッドを使い有効化
-            clearText.SetActive(IsCleard());
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -236,9 +233,6 @@ public class GameManagerScript : MonoBehaviour
 
             //移動処理を関数化
             MoveNumber("Player", playerIndex, playerIndex + new Vector2Int(0, 1));
-
-            // ゲームオブジェクトのSetActiveメソッドを使い有効化
-            clearText.SetActive(IsCleard());
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -248,11 +242,9 @@ public class GameManagerScript : MonoBehaviour
 
             //移動処理を関数化
             MoveNumber("Player", playerIndex, playerIndex + new Vector2Int(0, -1));
-
-            // ゲームオブジェクトのSetActiveメソッドを使い有効化
-            clearText.SetActive(IsCleard());
         }
 
+        // リセット処理
         if (Input.GetKeyDown(KeyCode.R))
         {
             for (int y = 0; y < map.GetLength(0); y++)
@@ -299,5 +291,8 @@ public class GameManagerScript : MonoBehaviour
                 }
             }
         }
+
+        // ゲームオブジェクトのSetActiveメソッドを使い有効化
+        clearText.SetActive(IsCleard());
     }
 }
