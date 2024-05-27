@@ -11,6 +11,7 @@ public class GameManagerScript : MonoBehaviour
     public GameObject boxPrefab;
     public GameObject goalPrefab;
     public GameObject particlePrefab;
+    public GameObject wallPrefab;
     public GameObject clearText;
 
     // クラスの中の、メソッドの外に書くことに注意
@@ -49,6 +50,12 @@ public class GameManagerScript : MonoBehaviour
         if (moveTo.y < 0 || moveTo.y >= field.GetLength(0)) { return false; }
         if (moveTo.x < 0 || moveTo.x >= field.GetLength(1)) { return false; }
 
+        // 移動先に4(壁)が居たら
+        if (field[moveTo.y, moveTo.x] != null && field[moveTo.y, moveTo.x].tag == "Wall")
+        {
+            return false;
+        }
+
         // 移動先に2(箱)が居たら
         if (field[moveTo.y, moveTo.x] != null && field[moveTo.y, moveTo.x].tag == "Box")
         {
@@ -68,6 +75,7 @@ public class GameManagerScript : MonoBehaviour
         Vector3 moveToPosition = IndexToPosition(moveTo);
         field[moveFrom.y, moveFrom.x].GetComponent<Move>().MoveTo(moveToPosition);
 
+        // パーティクル呼び出し
         for (int i = 0; i < 4; ++i)
         {
             GameObject particle = Instantiate(
@@ -139,13 +147,13 @@ public class GameManagerScript : MonoBehaviour
 
         // 配列の実態の作成と初期化
         map = new int[,] { // 8*7サイズ
-            { 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 2, 3, 0, 0 },
-            { 0, 0, 1, 0, 2, 3, 0, 0 },
-            { 0, 0, 0, 0, 2, 3, 0, 0 },
-            { 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 4, 4, 4, 4, 4, 4, 4, 4 },
+            { 4, 0, 0, 0, 0, 0, 0, 4 },
+            { 4, 0, 0, 0, 2, 3, 0, 4 },
+            { 4, 0, 1, 0, 2, 3, 0, 4 },
+            { 4, 0, 0, 0, 2, 3, 0, 4 },
+            { 4, 0, 0, 0, 0, 0, 0, 4 },
+            { 4, 4, 4, 4, 4, 4, 4, 4 },
         };
 
         field = new GameObject[map.GetLength(0), map.GetLength(1)];
@@ -177,6 +185,15 @@ public class GameManagerScript : MonoBehaviour
                 {
                     field[y, x] = Instantiate(
                         goalPrefab,
+                        IndexToPosition(new Vector2Int(x, y)),
+                        Quaternion.identity
+                        );
+                }
+
+                if (map[y, x] == 4)
+                {
+                    field[y, x] = Instantiate(
+                        wallPrefab,
                         IndexToPosition(new Vector2Int(x, y)),
                         Quaternion.identity
                         );
